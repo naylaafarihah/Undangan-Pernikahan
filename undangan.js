@@ -1,160 +1,394 @@
-(function initGuest() {
-  const params = new URLSearchParams(window.location.search);
-  const to = params.get('to') || params.get('name');
-  if (to) {
-    const clean = decodeURIComponent(to).replace(/\+/g, ' ');
-    document.getElementById('guestName').textContent = clean;
-    document.getElementById('guestWrap').style.display = 'block';
-    const nameInput = document.getElementById('wishName');
-    if (nameInput) nameInput.value = clean;
-  }
-})();
+document.addEventListener("DOMContentLoaded", function () {
+    const mainContent = document.getElementById("mainContent");
+    const cover = document.getElementById("cover");
 
-// CREATE PETALS 
-(function createPetals() {
-  const colors = ['#f9c4d2','#f7b7c5','#e8a0b0','#fde8ef','#fcd4e0','#f5a0b8'];
-  const container = document.getElementById('petals');
-  for (let i = 0; i < 22; i++) {
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    p.style.animationDuration = (5 + Math.random() * 8) + 's';
-    p.style.animationDelay    = (Math.random() * 8) + 's';
-    p.style.width  = (8 + Math.random() * 10) + 'px';
-    p.style.height = (10 + Math.random() * 12) + 'px';
-    p.style.opacity = 0.5 + Math.random() * 0.4;
-    container.appendChild(p);
-  }
-})();
+    const bgMusic = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
 
-// OPEN INVITATION 
-let invitationOpened = false;
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxClose = document.getElementById("lightboxClose");
 
-function openInvitation() {
-  if (invitationOpened) return;
-  invitationOpened = true;
+    const wishForm = document.getElementById("wishForm");
+    const wishesList = document.getElementById("wishesList");
 
-  // Show main content first (hidden → visible)
-  const main = document.getElementById('mainContent');
-  main.classList.remove('hidden');
+    const guestName = document.getElementById("guestName");
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get("to") || params.get("nama");
 
-  // Slide out cover
-  const cover = document.getElementById('cover');
-  cover.classList.add('closed');
+    if (guestName && guest) {
+        guestName.textContent = guest.replace(/\+/g, " ");
+    }
 
-  // autoplay music
-  tryPlayMusic();
+    // BUKA UNDANGAN 
+    window.openInvitation = function () {
+        if (cover) {
+            cover.classList.add("d-none");}
+        if (mainContent) {
+            mainContent.classList.remove("d-none");
+        }
+        if (musicBtn) {
+            musicBtn.classList.remove("d-none");
+        }
+        // Memulai musik setelah tombol diklik
+        if (bgMusic) {
+            bgMusic.play()
+                .then(function () {
+                    updateMusicButton(true);
+                })
+                .catch(function () {
+                    updateMusicButton(false);
+                });
+        }
+        // Memulai dari atas
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
 
-  // After transition, completely remove cover from flow
-  setTimeout(() => {
-    cover.style.display = 'none';
-  }, 900);
+    // musik
+    function updateMusicButton(isPlaying) {
+        if (!musicBtn) return;
+        musicBtn.classList.toggle("playing", isPlaying);
+        musicBtn.setAttribute(
+            "aria-label",
+            isPlaying ? "Jeda musik" : "Putar musik"
+        );
+        musicBtn.title = isPlaying ? "Jeda musik" : "Putar musik";
+        const icon = musicBtn.querySelector("i");
+        if (icon) {
+            icon.classList.toggle("bi-pause-fill", isPlaying);
+            icon.classList.toggle("bi-music-note-beamed", !isPlaying);
+        }
+        const label = musicBtn.querySelector(".music-label");
+        if (label) {
+            label.textContent = isPlaying ? "Jeda Musik" : "Putar Musik";
+        }
+    }
 
-  // Init AOS observer
-  initAOS();
-}
+    window.toggleMusic = function () {
+        if (!bgMusic) {
+            showToast("File musik tidak ditemukan.", "danger");
+            return;
+        }
+        if (bgMusic.paused) {
+            bgMusic.play()
+                .then(function () {
+                    updateMusicButton(true);
+                })
+                .catch(function () {
+                    updateMusicButton(false);
+                    showToast(
+                        "Musik belum bisa diputar. Periksa file Sempurna.mp3.",
+                        "warning"
+                    );
+                });
+        } else {
+            bgMusic.pause();
+            updateMusicButton(false);
+        }
+    };
 
-// MUSIC
-const audio = document.getElementById('bgMusic');
+    if (bgMusic) {
+        bgMusic.addEventListener("play", function () {
+            updateMusicButton(true);
+        });
+        bgMusic.addEventListener("pause", function () {
+            updateMusicButton(false);
+        });
+        bgMusic.addEventListener("ended", function () {
+            updateMusicButton(false);
+        });
+    }
 
-function tryPlayMusic() {
-    audio.volume = 0.35;
+    function updateCountdown() {
+        const weddingDate = new Date("2030-02-14T08:00:00+07:00");
+        const now = new Date();
+        const difference = weddingDate.getTime() - now.getTime();
 
-    audio.play().catch((error) => {
-        console.log('Musik gagal diputar:', error);
+        const daysElement = document.getElementById("days");
+        const hoursElement = document.getElementById("hours");
+        const minutesElement = document.getElementById("minutes");
+        const secondsElement = document.getElementById("seconds");
+
+        if (!daysElement || !hoursElement ||
+            !minutesElement || !secondsElement) {
+            return;
+        }
+        if (difference <= 0) {
+            daysElement.textContent = "0";
+            hoursElement.textContent = "0";
+            minutesElement.textContent = "0";
+            secondsElement.textContent = "0";
+            return;
+        }
+        const days = Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+        );
+        const hours = Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+        const minutes = Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+        const seconds = Math.floor(
+            (difference / 1000) % 60
+        );
+        daysElement.textContent = days;
+        hoursElement.textContent = String(hours).padStart(2, "0");
+        minutesElement.textContent = String(minutes).padStart(2, "0");
+        secondsElement.textContent = String(seconds).padStart(2, "0");
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    window.copyText = async function (text, button) {
+        try {
+            await navigator.clipboard.writeText(text);
+            if (button) {
+                const originalText = button.textContent;
+                button.textContent = "Berhasil Disalin!";
+                setTimeout(function () {
+                    button.textContent = originalText;
+                }, 2000);
+            }
+            showToast("Berhasil disalin ke clipboard!", "success");
+        } catch (error) {
+            // Cara alternatif jika Clipboard API tidak tersedia.
+            const temporaryInput = document.createElement("textarea");
+
+            temporaryInput.value = text;
+            temporaryInput.style.position = "fixed";
+            temporaryInput.style.opacity = "0";
+
+            document.body.appendChild(temporaryInput);
+            temporaryInput.select();
+
+            try {
+                const copied = document.execCommand("copy");
+
+                if (!copied) {
+                    throw new Error("Penyalinan gagal");
+                }
+
+                showToast("Berhasil disalin!", "success");
+            } catch (copyError) {
+                window.prompt("Salin teks berikut:", text);
+            }
+
+            temporaryInput.remove();
+        }
+    };
+
+    // ==================== GALERI FOTO ====================
+    const galleryButtons = document.querySelectorAll(
+        "[data-gallery-image]"
+    );
+
+    galleryButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const imageSource = button.getAttribute("data-gallery-image");
+
+            if (!imageSource || !lightbox || !lightboxImg) {
+                return;
+            }
+
+            lightboxImg.src = imageSource;
+            lightboxImg.alt = "Foto galeri Bagas dan Nazwa";
+
+            lightbox.classList.remove("d-none");
+            document.body.style.overflow = "hidden";
+        });
     });
-}
 
-// COPY TO CLIPBOARD 
-function copyText(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Tersalin ✓';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Salin Nomor';
-      btn.classList.remove('copied');
-    }, 2000);
-  }).catch(() => {
-    // Fallback
-    const el = document.createElement('textarea');
-    el.value = text;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    showToast('Tersalin!');
-  });
-}
+    function closeLightbox() {
+        if (!lightbox) return;
 
-// LIGHTBOX 
-(function initGallery() {
-  document.querySelectorAll('.gallery-item img').forEach(img => {
-    img.addEventListener('click', () => openLightbox(img.src));
-  });
-})();
+        lightbox.classList.add("d-none");
+        document.body.style.overflow = "";
 
-function openLightbox(src) {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightboxImg').src = src;
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+        if (lightboxImg) {
+            lightboxImg.src = "";
+        }
+    }
 
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
+    if (lightboxClose) {
+        lightboxClose.addEventListener("click", closeLightbox);
+    }
 
-// AOS (Animate On Scroll)
-function initAOS() {
-  const targets = document.querySelectorAll('[data-aos]');
+    if (lightbox) {
+        lightbox.addEventListener("click", function (event) {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
 
-  if (!('IntersectionObserver' in window)) {
-    targets.forEach(el => el.classList.add('aos-animate'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('aos-animate');
-      }
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeLightbox();
+        }
     });
-  }, { threshold: 0.12 });
 
-  targets.forEach(el => observer.observe(el));
-}
+    // ==================== UCAPAN & KEHADIRAN ====================
+    const STORAGE_KEY = "ucapanUndanganBagasNazwa";
 
-// TOAST 
-function showToast(msg) {
-  const toast = document.createElement('div');
-  toast.textContent = msg;
-  Object.assign(toast.style, {
-    position: 'fixed',
-    bottom: '4.5rem',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    background: '#1a1200',
-    color: '#e8d5a3',
-    padding: '0.6rem 1.5rem',
-    borderRadius: '50px',
-    fontSize: '0.8rem',
-    letterSpacing: '0.5px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-    zIndex: '9999',
-    border: '1px solid rgba(201,169,110,0.4)',
-    transition: 'opacity 0.4s',
-    whiteSpace: 'nowrap',
-  });
-  document.body.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    setTimeout(() => toast.remove(), 400);
-  }, 2200);
-}
+    function getWishes() {
+        try {
+            const savedWishes = localStorage.getItem(STORAGE_KEY);
+            return savedWishes ? JSON.parse(savedWishes) : [];
+        } catch (error) {
+            return [];
+        }
+    }
 
-// INIT 
-document.addEventListener('DOMContentLoaded', () => {
-  renderWishes();
+    function saveWishes(wishes) {
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(wishes)
+            );
+
+            return true;
+        } catch (error) {
+            showToast(
+                "Ucapan tidak dapat disimpan di browser ini.",
+                "danger"
+            );
+
+            return false;
+        }
+    }
+
+    function renderWishes() {
+        if (!wishesList) return;
+
+        const wishes = getWishes();
+
+        wishesList.replaceChildren();
+
+        if (wishes.length === 0) {
+            const emptyMessage = document.createElement("p");
+
+            emptyMessage.className =
+                "text-center text-muted py-3";
+
+            emptyMessage.textContent =
+                "Belum ada ucapan. Jadilah yang pertama memberikan doa!";
+
+            wishesList.appendChild(emptyMessage);
+            return;
+        }
+
+        // Ucapan terbaru ditampilkan terlebih dahulu.
+        wishes.slice().reverse().forEach(function (wish) {
+            const item = document.createElement("div");
+            item.className = "wish-item";
+
+            const name = document.createElement("h4");
+            name.textContent = wish.name;
+
+            const attendance = document.createElement("small");
+            attendance.textContent =
+                "Kehadiran: " + wish.attendance;
+
+            const message = document.createElement("p");
+            message.textContent = wish.message;
+
+            const date = document.createElement("small");
+            date.textContent = wish.date;
+
+            item.appendChild(name);
+            item.appendChild(attendance);
+            item.appendChild(message);
+            item.appendChild(document.createElement("br"));
+            item.appendChild(date);
+
+            wishesList.appendChild(item);
+        });
+    }
+
+    if (wishForm) {
+        wishForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const nameInput = document.getElementById("wishName");
+            const attendanceInput =
+                document.getElementById("wishAttend");
+            const messageInput =
+                document.getElementById("wishMessage");
+
+            if (!nameInput || !attendanceInput || !messageInput) {
+                showToast(
+                    "Form ucapan tidak ditemukan dengan benar.",
+                    "danger"
+                );
+                return;
+            }
+
+            const name = nameInput.value.trim();
+            const attendance = attendanceInput.value;
+            const message = messageInput.value.trim();
+
+            if (!name || !attendance || !message) {
+                showToast(
+                    "Silakan lengkapi semua kolom terlebih dahulu.",
+                    "warning"
+                );
+                return;
+            }
+
+            const newWish = {
+                name: name,
+                attendance: attendance,
+                message: message,
+                date: new Date().toLocaleString("id-ID", {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                })
+            };
+
+            const wishes = getWishes();
+            wishes.push(newWish);
+
+            if (saveWishes(wishes)) {
+                renderWishes();
+                wishForm.reset();
+
+                showToast(
+                    "Terima kasih atas ucapan dan doanya!",
+                    "success"
+                );
+            }
+        });
+    }
+
+    renderWishes();
+
+    // ==================== NOTIFIKASI TOAST ====================
+    function showToast(message, type) {
+        const toastContainer =
+            document.getElementById("toastContainer");
+
+        if (!toastContainer) {
+            alert(message);
+            return;
+        }
+
+        const toast = document.createElement("div");
+
+        toast.className =
+            "alert alert-" + (type || "success") +
+            " shadow-sm mb-2";
+
+        toast.setAttribute("role", "status");
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(function () {
+            toast.remove();
+        }, 3000);
+    }
 });
