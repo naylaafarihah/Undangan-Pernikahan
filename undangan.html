@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation | Nazwa & Bagas</title>
+    <link rel="stylesheet" href="undangan.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="cover" class="cover">
+        <div class="cover-overlay"></div>
+        <div class="petals-container" id="petals"></div>
+        <div class="cover-content">
+        <p class="cover-subtitle">The Wedding of</p>
+        <h1 class="cover-names">Nazwa <span>&</span> Bagas</h1>
+        <p class="cover-date">Sabtu, 14 Februari 2030</p>
+        <button class="btn-open" id="btnOpen" onclick="openInvitation()">
+            <span>✉</span> Buka Undangan
+        </button>
+      </div>
+      <div class="scroll-hint">scroll ke bawah ↓</div>
+    </div>
+    
+    <main id="mainContent" class="hidden">
+        <section class="section bismillah-section">
+            <div class="bismillah-text">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <p class="bismillah-sub">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
+            <div class="divider-ornament">❧</div>
+            <p class="verse">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya."</p>
+            <p class="verse-ref">QS. Ar-Rum: 21</p>
+        </section>
+    </div>
+
+    <section class="section couple-section">
+        <div class="section-tag">The Couple</div>
+        <h2 class="section-title">Mempelai</h2>
+        <div class="divider-line"></div>
+        <div class="couple-cards">
+            <div class="couple-card" data-aos="fade-right">
+                <div class="couple-avatar groom-avatar">
+                    <img src="fotocowo.jpeg" alt="Bagas" />
+                </div>
+                <p class="couple-role">Mempelai Pria</p>
+                <h3 class="couple-name">Bagas Sahrur R. S.T</h3>
+                <p class="couple-parents">Putra pertama dari<br/><strong>Bpk. Hendra Wijaya</strong><br/>& <strong>Ibu Sari Dewi</strong></p>
+            </div>
+            <div class="couple-and">
+                <span class="amp-big">&</span>
+            </div>
+            <div class="couple-card" data-aos="fade-left">
+                <div class="couple-avatar bride-avatar">
+                    <img src="fotocewe.jpeg" alt="Nazwa" />
+                </div>
+                <p class="couple-role">Mempelai Wanita</p>
+                <h3 class="couple-name">Nazwa Revalita S.Pd</h3>
+                <p class="couple-parents">Putri Tunggal dari<br/><strong>Bpk. Ahmad Fauzi</strong><br/>& <strong>Ibu Rina Mulyani</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section savedate-section">
+        <div class="section-tag">Mark Your Calendar</div>
+        <h2 class="section-title">Save the Date</h2>
+        <div class="divider-line"></div>
+    </section>
+    <section class="section events-section">
+        <div class="section-tag">Wedding Event</div>
+        <h2 class="section-title">Rangkaian Acara</h2>
+        <div class="divider-line"></div>
+        <div class="events-grid">
+      <!-- Akad -->
+            <div class="event-card" data-aos="fade-up">
+                <div class="event-icon">🕌</div>
+                <h3 class="event-name">Akad Nikah</h3>
+                <div class="event-detail"><span>📅</span> Sabtu, 14 Februari 2030</div>
+                <div class="event-detail"><span>🕐</span> 08.00 – 10.00 WIB</div>
+                <div class="event-detail"><span>📍</span> Masjid Al-Akbar<br/>Jl. Masjid Al-AkbarTimur No.1, Pagesangan, Kec. Jambangan, Surabaya, Jawa Timur</div>
+                <a class="btn-maps" href="https://maps.app.goo.gl/kxZuvJLLjfD38z7f8?g_st=ac" target="_blank">Buka Maps 🗺</a>
+            </div>
+       <!-- Resepsi -->
+            <div class="event-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="event-icon">🌸</div>
+                <h3 class="event-name">Resepsi</h3>
+                <div class="event-detail"><span>📅</span> Sabtu, 14 Februari 2030</div>
+                <div class="event-detail"><span>🕐</span> 11.00 – 15.00 WIB</div>
+                <div class="event-detail"><span>📍</span> Legacy Ballroom<br/>Jl. Raya Kupang Indah No.33-37, Dukuh Kupang, Kec. Dukuhpakis, Surabaya, Jawa Timur</div>
+                <a class="btn-maps" href="https://maps.app.goo.gl/R1WKGYhSvy9Uzm1P7" target="_blank">Buka Maps 🗺</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section gallery-section">
+        <div class="section-tag">Our Moments</div>
+        <h2 class="section-title">Galeri Foto</h2>
+        <div class="divider-line"></div>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="foto 3.jpeg" alt="foto 1" /></div>
+            <div class="gallery-item"><img src="images (2).jpeg" alt="foto 2" /></div>
+            <div class="gallery-item"><img src="images (3).jpeg" alt="foto 3" /></div>
+            <div class="gallery-item"><img src="images (4).jpeg" alt="foto 4" /></div>
+            <div class="gallery-item"><img src="images.jpeg" alt="foto 5" /></div>
+            <div class="gallery-item"><img src="foto 6.jpeg" alt="foto 6" /></div>
+        </div>
+    </section>
+
+    <section class="section lovestory-section">
+        <div class="section-tag">Our Journey</div>
+        <h2 class="section-title">Love Story</h2>
+        <div class="divider-line"></div>
+
+        <div class="timeline">
+            <div class="tl-item left" data-aos="fade-right">
+                <div class="story-icon">✦</div>
+                <div class="tl-content">
+                    <h4>Awal Pertemuan</h4>
+                    <p class="tl-date">Maret 2024</p>
+                    <p>Kami dipertemukan dalam sebuah kesempatan yang sederhana, menjadi awal dari kisah yang kami jalani bersama.</p>
+                </div>
+            </div>
+        </div>
+        <div class="tl-item right" data-aos="fade-left">
+            <div class="story-icon">✦</div>
+            <div class="tl-content">
+                <h4>Saling Mengenal</h4>
+                <p class="tl-date">Juni 2025</p>
+                <p>Seiring waktu, kami belajar memahami satu sama lain dan semakin yakin untuk melangkah ke tahap yang lebih serius.</p>
+            </div>
+        </div>
+        <div class="tl-item left" data-aos="fade-right">
+            <div class="story-icon">✦</div>
+            <div class="tl-content">
+                <h4>Menuju Pernikahan</h4>
+                <p class="tl-date">14 Februari 2030</p>
+                <p>Dengan restu keluarga dan niat untuk membangun masa depan bersama, kami memutuskan untuk mengikat janji suci pernikahan pada 14 Februari 2030.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section gift-section">
+        <div class="section-tag">Wedding Gift</div>
+        <h2 class="section-title">Hadiah Pernikahan</h2>
+        <div class="divider-line"></div>
+        <p class="gift-desc">Tanpa Mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang ingin memberikan tanda kasih untuk kami, dapat melalui:</p>
+        <div class="gift-cards">
+            <div class="gift-card" data-aos="fade-up">
+                <div class="gift-bank-logo">
+                    <img src="https://i.pinimg.com/736x/6b/13/7a/6b137a6a174c2f054904a3be35fe249f.jpg"alt="Logo Bank BRI">
+                </div>
+                <p class="gift-bank">Bank BRI</p>
+                <p class="gift-norek" id="norekBRI">1234567890</p>
+                <p class="gift-atas">a.n. Bagas Sahrur R.</p>
+                <button class="btn-copy" onclick="copyText('1234567890', this)">Salin Nomor</button>
+            </div>
+            <div class="gift-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="gift-bank-logo">
+                <img src="shopeepay.png" alt="Logo ShopeePay">
+                </div>
+                <p class="gift-bank">ShopeePay</p>
+                <p class="gift-norek" id="norekShopeePay">082233301593</p>
+                <p class="gift-atas">a.n. Nazwa Revalita</p>
+            <button class="btn-copy"
+                onclick="copyText('082233301593', this)">
+                Salin Nomor
+            </button>
+        </div>
+        </div>
+    </section>
+
+    <section class="section guestbook-section">
+        <div class="section-tag">Send Your Wishes</div>
+        <h2 class="section-title">Ucapan & Doa</h2>
+        <div class="divider-line"></div>
+        <form class="wish-form" onsubmit="submitWish(event)">
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" id="wishName" placeholder="Nama Anda" required />
+            </div>
+            <div class="form-group">
+                <label>Kehadiran</label>
+                <select id="wishAttend">
+                    <option value="hadir">Hadir</option>
+                    <option value="tidak">Tidak Bisa Hadir</option>
+                    <option value="ragu">Masih Belum Pasti</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ucapan & Doa</label>
+                <textarea id="wishMessage" placeholder="Tuliskan ucapan dan doa terbaik Anda..." rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Kirim Ucapan 💌</button>
+        </form>
+        <div class="wishes-list" id="wishesList"></div>
+    </section>
+
+    <footer class="footer-section">
+        <p class="footer-thanks">Terima kasih atas kehadiran dan doa restu Bapak/Ibu/Saudara/i.</p>
+        <p class="footer-greeting">Hormat kami,</p>
+        <div class="footer-names">Bagas <span>&amp;</span> Nazwa</div>
+        <p class="footer-date">14 Februari 2030</p>
+        <div class="footer-ornament">❧</div>
+    </footer>
+    <script src="undangan.js"></script>
+</body>
+</html>
